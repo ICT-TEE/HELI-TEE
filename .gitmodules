@@ -8,8 +8,8 @@
 	branch = penglai-zgc-tee
 [submodule "NEMU"]
 	path = NEMU
-	url = git@github.com:PENGLAI-ZGC-TEE/NEMU.git
-	branch = hosttlb-tmp
+	url = git@github.com:DASICS-ICT/NEMU.git
+	branch = fdi-tee-nh3
 [submodule "debian-linux-kernel"]
 	path = debian-linux-kernel
 	url = git@github.com:PENGLAI-ZGC-TEE/debian-linux-kernel.git

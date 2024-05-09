@@ -24,7 +24,6 @@ export ARCH=riscv
 export ISA=riscv64
 export CROSS_COMPILE=riscv64-unknown-linux-gnu-
 export CROSS_COMPILE_OBJCOPY=$(CROSS_COMPILE)objcopy
-export RISCV=/nfs/home/share/riscv/
 
 # NEMU settings
 NEMU_BINARY=$(NEMU_HOME)/build/riscv64-nemu-interpreter
@@ -47,7 +46,7 @@ dts:
 
 init: 
 	git submodule update --init --recursive
-	cd NEMU; make riscv64-tee_defconfig; make -j8
+	cd NEMU; make riscv64-tee-pmptable_defconfig; make -j8
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/busybox
 	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) ${LINUX_INIT_CONFIG} 
 	RISCV_ROOTFS_HOME=$(RISCV_ROOTFS_HOME) $(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux
@@ -55,6 +54,8 @@ init:
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/penglai-driver
 	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) ${LINUX_CONFIG} 
 	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux
+	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/penglai-driver clean
+	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/penglai-driver
 	@echo "initialization success"
 
 penglai-sdk:
@@ -62,7 +63,7 @@ penglai-sdk:
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/penglai-driver
 	
 run:
-	$(NEMU_BINARY) $(IMG) 
+	$(NEMU_BINARY) -b $(IMG) 
 
 nemu:
 	$(MAKE) -C $(NEMU_HOME) -j32
