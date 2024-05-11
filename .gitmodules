@@ -1,11 +1,11 @@
 [submodule "opensbi"]
 	path = opensbi
 	url = git@github.com:PENGLAI-ZGC-TEE/opensbi.git
-	branch = penglai-zgc-tee
+	branch = fix-heayzone
 [submodule "riscv-rootfs"]
 	path = riscv-rootfs
 	url = git@github.com:PENGLAI-ZGC-TEE/riscv-rootfs.git
-	branch = penglai-zgc-tee
+	branch = origin-heavyzone
 [submodule "NEMU"]
 	path = NEMU
 	url = git@github.com:DASICS-ICT/NEMU.git
@@ -13,3 +13,4 @@
 [submodule "debian-linux-kernel"]
 	path = debian-linux-kernel
 	url = git@github.com:PENGLAI-ZGC-TEE/debian-linux-kernel.git
+	branch = origin-heavyzone
