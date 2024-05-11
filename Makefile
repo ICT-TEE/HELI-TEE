@@ -38,7 +38,7 @@ opensbi: linux dts
 
 linux:
 	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) $(LINUX_CONFIG) 
-	RISCV_ROOTFS_HOME=$(RISCV_ROOTFS_HOME) $(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux
+	RISCV_ROOTFS_HOME=$(RISCV_ROOTFS_HOME) $(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux -j16
 	cd $(LINUX_HOME); $(CROSS_COMPILE_OBJCOPY) -O binary vmlinux vmlinux.bin
 	
 dts:
@@ -46,14 +46,14 @@ dts:
 
 init: 
 	git submodule update --init --recursive
-	cd NEMU; make riscv64-tee-pmptable_defconfig; make -j8
+	cd NEMU; make riscv64-tee-pmptable_defconfig; make -j16
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/busybox
 	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) ${LINUX_INIT_CONFIG} 
-	RISCV_ROOTFS_HOME=$(RISCV_ROOTFS_HOME) $(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux
+	RISCV_ROOTFS_HOME=$(RISCV_ROOTFS_HOME) $(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux -j16
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/penglai-sdk
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/penglai-driver
 	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) ${LINUX_CONFIG} 
-	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux
+	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux -j16
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/penglai-driver clean
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/penglai-driver
 	@echo "initialization success"
@@ -66,11 +66,12 @@ run:
 	$(NEMU_BINARY) -b $(IMG) 
 
 nemu:
-	$(MAKE) -C $(NEMU_HOME) -j32
+	$(MAKE) -C $(NEMU_HOME) riscv64-tee-spmp_defconfig 
+	$(MAKE) -C $(NEMU_HOME) -j16
 
 nemu-pmptable:
 	$(MAKE) -C $(NEMU_HOME) riscv64-tee-pmptable_defconfig
-	$(MAKE) -C $(NEMU_HOME) -j32
+	$(MAKE) -C $(NEMU_HOME) -j16
 
 nemu-menu:
 	$(MAKE) -C $(NEMU_HOME) menuconfig
