@@ -10,7 +10,7 @@ make FDI with Penglai-TEE work on NEMU.
 make init
 ```
 
-* Secondly, use makefile to automatically get work down.
+* Secondly, use makefile to automatically get work done.
 
 ```
 # compile
