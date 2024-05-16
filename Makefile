@@ -46,7 +46,8 @@ dts:
 
 init: 
 	git submodule update --init --recursive
-	cd NEMU; make riscv64-tee-pmptable_defconfig; make -j16
+	$(MAKE) -C $(NEMU_HOME) riscv64-tee-spmp_defconfig 
+	$(MAKE) -C $(NEMU_HOME) -j16
 	$(MAKE) -C $(RISCV_ROOTFS_HOME)/apps/busybox
 	$(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) ${LINUX_INIT_CONFIG} 
 	RISCV_ROOTFS_HOME=$(RISCV_ROOTFS_HOME) $(MAKE) -C $(LINUX_HOME) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) vmlinux -j16
@@ -79,4 +80,10 @@ nemu-menu:
 clean:
 	$(MAKE) -C $(SBI_HOME) clean
 	$(MAKE) -C $(LINUX_HOME) clean
+
+clean-all:
+	$(MAKE) -C $(NEMU_HOME) clean
+	$(MAKE) -C $(SBI_HOME) clean
+	$(MAKE) -C $(LINUX_HOME) clean
+	$(MAKE) -C $(RISCV_ROOTFS_HOME) clean
 

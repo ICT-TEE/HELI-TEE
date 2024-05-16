@@ -1,6 +1,6 @@
-# NEMU-TEE
+# NEMU-FDI-TEE
 
-make Penglai-TEE work on NEMU.
+make FDI with Penglai-TEE work on NEMU.
 
 # Usage
 
@@ -14,7 +14,7 @@ make init
 
 ```
 # compile
-make -j8
+make
 # run
 make run
 ```
