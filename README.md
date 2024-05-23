@@ -7,6 +7,7 @@ make FDI with Penglai-TEE work on NEMU.
 * Firstly, initialize your repo with:
 
 ```bash
+source env.sh
 make init
 ```
 
